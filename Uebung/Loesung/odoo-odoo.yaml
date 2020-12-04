@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: odoo
+  labels:
+    app: odoo
+spec:
+  nodeName: node-2
+  containers:
+    - name: odoo-container
+      image: odoo
+      env:
+        - name: HOST
+          value: "postgres-service"
+      ports:
+        - containerPort: 8069
+          name: "odoo-http"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odoo-service
+spec:
+  ports:
+  - port: 8069
+    targetPort: odoo-http
+  selector:
+    app: odoo
+  
